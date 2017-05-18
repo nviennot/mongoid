@@ -152,6 +152,7 @@ module Mongoid
               next unless expr
               criteria = sel[operator] || []
               normalized = expr.inject({}) do |hash, (field, value)|
+                field = Key.convert_symbol_decoration_if_needed(field)
                 hash.merge!(field.__expr_part__(value.__expand_complex__))
                 hash
               end

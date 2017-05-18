@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'symbol_decoration'
 module Mongoid
   class Criteria
     module Queryable
@@ -48,10 +49,8 @@ module Mongoid
             #
             # @since 1.0.0
             def add_key(name, strategy, operator, additional = nil, &block)
-              define_method(name) do
-                method = "__#{strategy}__".to_sym
-                Key.new(self, method, operator, additional, &block)
-              end
+              ::Symbol::Decoration.register(name)
+              Key.register_symbol_operator(name, strategy, operator, additional, &block)
             end
 
             # Evolves the symbol into a MongoDB friendly value - in this case

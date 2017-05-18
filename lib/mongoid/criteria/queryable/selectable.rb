@@ -614,6 +614,7 @@ module Mongoid
           clone.tap do |query|
             if criterion
               criterion.each_pair do |field, value|
+                field = Key.convert_symbol_decoration_if_needed(field)
                 yield(query.selector, field.is_a?(Key) ? field : field.to_s, value)
               end
             end
